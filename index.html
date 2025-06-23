@@ -2,9 +2,14 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>I’m Mac</title>
+  <title>i'm mac</title>
   <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><circle cx=%2250%22 cy=%2250%22 r=%2230%22 fill=%22black%22 /></svg>" />
   <style>
+    :root {
+      --bg: white;
+      --text: black;
+    }
+
     body {
       margin: 0;
       display: flex;
@@ -14,7 +19,9 @@
       height: 100vh;
       font-family: sans-serif;
       font-size: 2em;
-      color: black;
+      background-color: var(--bg);
+      color: var(--text);
+      transition: background-color 1s ease, color 1s ease;
     }
 
     .im-mac {
@@ -25,6 +32,7 @@
       animation:
         typing 1.8s steps(8, end),
         blink-caret 0.6s step-end infinite;
+      cursor: pointer;
     }
 
     @keyframes typing {
@@ -42,10 +50,48 @@
       margin-top: 0.5em;
       opacity: 0.6;
     }
+
+    .easter-egg {
+      margin-top: 1em;
+      font-size: 0.5em;
+      opacity: 0;
+      transition: opacity 1s ease;
+      font-weight: normal;
+    }
+
+    .dark-mode {
+      --bg: black;
+      --text: white;
+    }
   </style>
 </head>
 <body>
-  <div class="im-mac">i’m mac</div>
+  <div class="im-mac" onclick="revealEasterEgg()">i’m mac</div>
   <div class="contact">me@whoismac.com</div>
+  <div class="easter-egg" id="easter-egg">you found me.</div>
+
+  <script>
+    function revealEasterEgg() {
+      document.getElementById('easter-egg').style.opacity = '1';
+    }
+
+    let keySequence = '';
+    const secretCode = '110010';
+
+    document.addEventListener('keydown', (e) => {
+      // Only allow number keys in the sequence
+      if (!/^[0-9]$/.test(e.key)) return;
+
+      keySequence += e.key;
+      if (keySequence.length > secretCode.length) {
+        keySequence = keySequence.slice(-secretCode.length);
+      }
+
+      if (keySequence === secretCode) {
+        document.body.classList.toggle('dark-mode');
+        keySequence = '';
+      }
+    });
+  </script>
 </body>
 </html>
